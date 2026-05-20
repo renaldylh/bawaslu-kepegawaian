@@ -1,6 +1,6 @@
 # Panduan Menjalankan Aplikasi Biodata Pengawas Bawaslu
 
-Dokumen ini berisi panduan langkah demi langkah untuk menginstal, mengonfigurasi, dan menjalankan aplikasi **Biodata Pengawas Bawaslu** di komputer lokal Anda, baik untuk sisi **Backend (Server)** maupun **Frontend (Client)**.
+Dokumen ini berisi panduan langkah demi langkah untuk menginstal, mengonfigurasi, dan menjalankan aplikasi **Biodata Pengawas Bawaslu** di komputer lokal Anda. Aplikasi ini mendukung **SQLite** (tanpa perlu install database server) dan **PostgreSQL** (untuk skala production/server).
 
 ---
 
@@ -9,22 +9,11 @@ Dokumen ini berisi panduan langkah demi langkah untuk menginstal, mengonfigurasi
 Pastikan perangkat Anda sudah terpasang perangkat lunak berikut:
 1. **Node.js** (Versi 18 ke atas direkomendasikan)
 2. **NPM** (Bawaan dari instalasi Node.js)
-3. **PostgreSQL Database** (Versi 12 ke atas)
+3. *Opsional*: **PostgreSQL** (Jika ingin menggunakan database PostgreSQL)
 
 ---
 
-## 🗄️ Langkah 1: Persiapan Database PostgreSQL
-
-1. Buka aplikasi database Anda (misalnya **pgAdmin** atau terminal **psql**).
-2. Buat database baru bernama `employee_bio` (atau nama lain sesuai keinginan Anda).
-   * Melalui SQL Shell (psql):
-     ```sql
-     CREATE DATABASE employee_bio;
-     ```
-
----
-
-## ⚙️ Langkah 2: Konfigurasi & Menjalankan Backend (Server)
+## ⚙️ Langkah 1: Konfigurasi & Menjalankan Backend (Server)
 
 1. Buka terminal/command prompt lalu masuk ke direktori **server**:
    ```bash
@@ -36,28 +25,37 @@ Pastikan perangkat Anda sudah terpasang perangkat lunak berikut:
    npm install
    ```
 
-3. Duplikat file konfigurasi `.env.example` menjadi `.env`:
-   ```bash
-   copy .env.example .env
+3. Duplikat file konfigurasi `.env.example` menjadi `.env` (atau edit file `.env` yang sudah ada):
+   * Di Windows Command Prompt:
+     ```cmd
+     copy .env.example .env
+     ```
+   * Di Linux/macOS atau Git Bash:
+     ```bash
+     cp .env.example .env
+     ```
+
+4. Buka file `.env` di text editor (seperti VS Code), lalu pilih jenis database yang ingin digunakan:
+
+   ### PILIHAN A: Menggunakan SQLite (Rekomendasi - Paling Mudah & Cepat)
+   *Anda tidak perlu menginstal database server apapun. Database akan disimpan dalam satu file otomatis.*
+   ```env
+   DB_DIALECT=sqlite
+   DB_STORAGE=./database.sqlite
    ```
 
-4. Buka file `.env` di text editor (seperti VS Code), lalu sesuaikan konfigurasi database Anda:
+   ### PILIHAN B: Menggunakan PostgreSQL (Untuk Production / Server)
+   *Pastikan database server PostgreSQL Anda aktif.*
    ```env
-   # Database Configuration
+   DB_DIALECT=postgres
    DB_HOST=localhost
    DB_PORT=5432
    DB_NAME=employee_bio
    DB_USERNAME=postgres      # Ganti dengan username PostgreSQL Anda
    DB_PASSWORD=password      # Ganti dengan password PostgreSQL Anda
-
-   # Authentication
-   JWT_SECRET=rahasia-bawaslu-super-aman
-
-   # Server Configuration
-   PORT=3000
    ```
 
-5. Jalankan migrasi database untuk membuat tabel-tabel yang diperlukan:
+5. Jalankan migrasi database untuk membuat tabel-tabel secara otomatis:
    ```bash
    npx sequelize-cli db:migrate
    ```
@@ -75,14 +73,14 @@ Pastikan perangkat Anda sudah terpasang perangkat lunak berikut:
 
 ---
 
-## 🖥️ Langkah 3: Menjalankan Frontend (Client)
+## 🖥️ Langkah 2: Menjalankan Frontend (Client)
 
 1. Buka jendela terminal baru lalu masuk ke direktori **client/employee-bio**:
    ```bash
    cd client/employee-bio
    ```
 
-2. Instal dependensi frontend (jika belum pernah dilakukan):
+2. Instal dependensi frontend:
    ```bash
    npm install
    ```

@@ -22,11 +22,11 @@ export default function ProfileId() {
 
       if (id) {
         // get ProfileById (Admin only)
-        url = `http://localhost:3000/profiles/${id}`;
+        url = `${import.meta.env.VITE_API_URL || "http://localhost:3030"}/profiles/${id}`;
         isOwn = false;
       } else {
         // get MyProfile
-        url = `http://localhost:3000/`;
+        url = `${import.meta.env.VITE_API_URL || "http://localhost:3030"}/`;
         isOwn = true;
       }
 
@@ -91,11 +91,11 @@ export default function ProfileId() {
             profileData.id ||
             profileData.userId ||
             (profileData.Biodata && profileData.Biodata[0]?.user_id);
-          url = `http://localhost:3000/profiles/${userId}`;
+          url = `${import.meta.env.VITE_API_URL || "http://localhost:3030"}/profiles/${userId}`;
           print("Deleting own profile, user ID:", userId);
         } else {
           // Jika admin hapus menggunakan ID dari req.params
-          url = `http://localhost:3000/profiles/${id}`;
+          url = `${import.meta.env.VITE_API_URL || "http://localhost:3030"}/profiles/${id}`;
           print("Admin deleting user profile, user ID:", id);
         }
 

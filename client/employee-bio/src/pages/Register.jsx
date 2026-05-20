@@ -14,7 +14,7 @@ export default function Register() {
     try {
       const response = await axios({
         method: "POST",
-        url: `http://localhost:3000/register`,
+        url: `${import.meta.env.VITE_API_URL || "http://localhost:3030"}/register`,
         data: {
           email,
           password,

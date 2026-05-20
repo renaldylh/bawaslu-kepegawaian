@@ -49,7 +49,7 @@ export default function UpdateBiodata() {
       }
 
       // Cek apakah ini profil sendiri dengan membandingkan dengan user saat ini
-      const url = `http://localhost:3000/profiles/${id}`;
+      const url = `${import.meta.env.VITE_API_URL || "http://localhost:3030"}/profiles/${id}`;
       const response = await axios({
         method: "GET",
         url: url,
@@ -63,7 +63,7 @@ export default function UpdateBiodata() {
       // Cek apakah ini profil sendiri dengan mendapatkan info user saat ini
       const currentUserResponse = await axios({
         method: "GET",
-        url: `http://localhost:3000/`,
+        url: `${import.meta.env.VITE_API_URL || "http://localhost:3030"}/`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -238,7 +238,7 @@ export default function UpdateBiodata() {
 
       const response = await axios({
         method: "PUT",
-        url: `http://localhost:3000/profiles/${id}`,
+        url: `${import.meta.env.VITE_API_URL || "http://localhost:3030"}/profiles/${id}`,
         data: submitData,
         headers: {
           Authorization: `Bearer ${token}`,

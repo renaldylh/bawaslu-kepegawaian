@@ -3,7 +3,7 @@ import { cookieHelper } from "./cookieHelper";
 
 // Create axios instance
 const apiClient = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3030",
   withCredentials: true, // Penting untuk mengirim cookies
 });
 

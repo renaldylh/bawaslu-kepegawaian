@@ -106,7 +106,7 @@ export default function AllProfiles() {
         queryParams.append("educationLevel", filters.educationLevel.trim());
 
       const queryString = queryParams.toString();
-      const url = `http://localhost:3000/profiles${
+      const url = `${import.meta.env.VITE_API_URL || "http://localhost:3030"}/profiles${
         queryString ? `?${queryString}` : ""
       }`;
 
