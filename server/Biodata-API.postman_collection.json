@@ -1,0 +1,763 @@
+{
+  "info": {
+    "name": "EDI Biodata API v2.0",
+    "description": "Complete API collection for Employee Data Information (EDI) Biodata Management System with authentication, role-based access control, and comprehensive CRUD operations for biodata management including education, work experience, training, and skills.",
+    "version": "2.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string",
+      "description": "Base URL for the EDI Biodata API"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string",
+      "description": "JWT access token for authentication"
+    },
+    {
+      "key": "user_id",
+      "value": "1",
+      "type": "string",
+      "description": "Current authenticated user ID"
+    },
+    {
+      "key": "admin_token",
+      "value": "",
+      "type": "string",
+      "description": "JWT access token for admin user"
+    },
+    {
+      "key": "staff_token",
+      "value": "",
+      "type": "string",
+      "description": "JWT access token for staff user"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register Staff User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"staff@example.com\",\n  \"password\": \"password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["register"]
+            },
+            "description": "Register a new staff user. By default, users are created with 'Staff' role."
+          },
+          "response": []
+        },
+        {
+          "name": "Register Admin User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"admin123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["register"]
+            },
+            "description": "Register a new admin user. Note: Admin role must be set manually in database after registration."
+          },
+          "response": []
+        },
+        {
+          "name": "Login Staff User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('access_token', response.access_token);",
+                  "    pm.collectionVariables.set('staff_token', response.access_token);",
+                  "    pm.collectionVariables.set('user_id', response.user.id);",
+                  "    console.log('Staff token saved:', response.access_token);",
+                  "    console.log('User data:', response.user);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"staff@example.com\",\n  \"password\": \"password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["login"]
+            },
+            "description": "Login as staff user. Returns access_token and user data (without password)."
+          },
+          "response": []
+        },
+        {
+          "name": "Login Admin User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('access_token', response.access_token);",
+                  "    pm.collectionVariables.set('admin_token', response.access_token);",
+                  "    pm.collectionVariables.set('user_id', response.user.id);",
+                  "    console.log('Admin token saved:', response.access_token);",
+                  "    console.log('User data:', response.user);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"admin123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["login"]
+            },
+            "description": "Login as admin user. Returns access_token and user data (without password)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User Profile",
+      "item": [
+        {
+          "name": "Get My Profile (Full Data)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": ["{{baseUrl}}"],
+              "path": [""]
+            },
+            "description": "Get current authenticated user's complete profile including biodata, education, work experience, training, and skills."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Biodata Management",
+      "item": [
+        {
+          "name": "Create Biodata (Complete)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"applied_position\": \"Full Stack Developer\",\n  \"full_name\": \"John Doe\",\n  \"id_number\": \"1234567890123456\",\n  \"birth_place\": \"Jakarta\",\n  \"birth_date\": \"1995-01-25\",\n  \"gender\": \"Male\",\n  \"religion\": \"Islam\",\n  \"blood_type\": \"A\",\n  \"marital_status\": \"Single\",\n  \"address_id\": \"Jl. Kebon Jeruk Raya No. 15, RT 001/RW 005, Kebon Jeruk, Jakarta Barat 11530\",\n  \"address_current\": \"Jl. Sudirman No. 88, Apt. Menteng Square Tower A Lt. 12, Jakarta Pusat 10220\",\n  \"personal_email\": \"john.doe@gmail.com\",\n  \"phone_number\": \"081234567890\",\n  \"emergency_contact\": \"081298765432\",\n  \"willing_to_relocate\": true,\n  \"expected_salary\": 18000000,\n  \"educations\": [\n    {\n      \"education_level\": \"Bachelor\",\n      \"institution_name\": \"Universitas Indonesia\",\n      \"major\": \"Teknik Informatika\",\n      \"graduation_year\": 2017,\n      \"gpa\": 3.7\n    },\n    {\n      \"education_level\": \"High School\",\n      \"institution_name\": \"SMA Negeri 1 Jakarta\",\n      \"major\": \"IPA\",\n      \"graduation_year\": 2013,\n      \"gpa\": 3.8\n    }\n  ],\n  \"trainings\": [\n    {\n      \"course_name\": \"Full Stack JavaScript Development\",\n      \"has_certificate\": true,\n      \"year\": 2023\n    },\n    {\n      \"course_name\": \"AWS Cloud Practitioner\",\n      \"has_certificate\": true,\n      \"year\": 2022\n    }\n  ],\n  \"work_experiences\": [\n    {\n      \"company_name\": \"PT. Teknologi Nusantara\",\n      \"last_position\": \"Senior Frontend Developer\",\n      \"last_salary\": 15000000,\n      \"last_year\": 2024\n    },\n    {\n      \"company_name\": \"CV. Digital Solusi\",\n      \"last_position\": \"Junior Full Stack Developer\",\n      \"last_salary\": 8500000,\n      \"last_year\": 2021\n    }\n  ],\n  \"skills\": [\n    {\n      \"skill_description\": \"Programming Languages: JavaScript, TypeScript, Python, PHP. Frontend: React.js, Vue.js, HTML5, CSS3, Bootstrap, Tailwind CSS. Backend: Node.js, Express.js, Laravel, Django. Database: MySQL, PostgreSQL, MongoDB. Tools: Git, Docker, AWS, Postman, VS Code.\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/profiles",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles"]
+            },
+            "description": "Create complete biodata with all related data (education, training, work experience, skills). User can only create biodata once. Returns 201 on success."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Biodata (Minimal Required Fields)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"applied_position\": \"Software Engineer\",\n  \"full_name\": \"Jane Smith\",\n  \"id_number\": \"9876543210987654\",\n  \"birth_place\": \"Bandung\",\n  \"birth_date\": \"1990-05-15\",\n  \"gender\": \"Female\",\n  \"marital_status\": \"Single\",\n  \"address_id\": \"Jl. Merdeka No. 1, Bandung\",\n  \"address_current\": \"Jl. Sudirman No. 2, Jakarta\",\n  \"personal_email\": \"jane.smith@email.com\",\n  \"phone_number\": \"08123456789\",\n  \"willing_to_relocate\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/profiles",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles"]
+            },
+            "description": "Create biodata with only required fields. Optional arrays (educations, trainings, work_experiences, skills) can be omitted."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Biodata (Complete with Arrays)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"applied_position\": \"Senior Full Stack Developer\",\n  \"full_name\": \"John Doe Updated\",\n  \"expected_salary\": 25000000,\n  \"marital_status\": \"Married\",\n  \"willing_to_relocate\": false,\n  \"educations\": [\n    {\n      \"education_level\": \"Master\",\n      \"institution_name\": \"Institut Teknologi Bandung\",\n      \"major\": \"Magister Teknik Informatika\",\n      \"graduation_year\": 2019,\n      \"gpa\": 3.8\n    }\n  ],\n  \"trainings\": [\n    {\n      \"course_name\": \"Advanced React & Next.js\",\n      \"has_certificate\": true,\n      \"year\": 2024\n    }\n  ],\n  \"work_experiences\": [\n    {\n      \"company_name\": \"PT. Tech Innovation\",\n      \"last_position\": \"Lead Developer\", \n      \"last_salary\": 22000000,\n      \"last_year\": 2024\n    }\n  ],\n  \"skills\": [\n    {\n      \"skill_description\": \"Advanced JavaScript, React.js, Next.js, Node.js, TypeScript, GraphQL, Docker, Kubernetes, AWS, Microservices Architecture.\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/profiles/{{user_id}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles", "{{user_id}}"]
+            },
+            "description": "Update biodata with arrays. When array fields are provided, they replace existing data completely (delete-and-recreate strategy)."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Biodata (Basic Fields Only)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"applied_position\": \"Technical Lead\",\n  \"expected_salary\": 30000000\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/profiles/{{user_id}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles", "{{user_id}}"]
+            },
+            "description": "Update only basic biodata fields. Array fields (educations, trainings, etc.) are not modified when omitted."
+          },
+          "response": []
+        },
+        {
+          "name": "Clear Education Data",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"educations\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/profiles/{{user_id}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles", "{{user_id}}"]
+            },
+            "description": "Remove all education records by sending empty array. Works for trainings, work_experiences, and skills arrays too."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User Management",
+      "item": [
+        {
+          "name": "Get All Users (Admin Only)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/profiles",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles"]
+            },
+            "description": "Get all users with their complete biodata. Admin access required."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Users - Filter by Name",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/profiles?name=john",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles"],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "john",
+                  "description": "Filter by full name (case insensitive, partial match)"
+                }
+              ]
+            },
+            "description": "Filter users by name (case insensitive, partial match). Admin access required."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Users - Filter by Position",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/profiles?position=developer",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles"],
+              "query": [
+                {
+                  "key": "position",
+                  "value": "developer",
+                  "description": "Filter by applied position (case insensitive, partial match)"
+                }
+              ]
+            },
+            "description": "Filter users by applied position. Admin access required."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Users - Filter by Education Level",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/profiles?educationLevel=Bachelor",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles"],
+              "query": [
+                {
+                  "key": "educationLevel",
+                  "value": "Bachelor",
+                  "description": "Filter by education level (exact match)"
+                }
+              ]
+            },
+            "description": "Filter users by education level. Only returns users with that education level. Admin access required."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Users - Combined Filters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/profiles?name=john&position=developer&educationLevel=Bachelor",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles"],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "john",
+                  "description": "Filter by name"
+                },
+                {
+                  "key": "position",
+                  "value": "developer",
+                  "description": "Filter by position"
+                },
+                {
+                  "key": "educationLevel",
+                  "value": "Bachelor",
+                  "description": "Filter by education level"
+                }
+              ]
+            },
+            "description": "Combine multiple filters. Admin access required."
+          },
+          "response": []
+        },
+        {
+          "name": "Get User by ID (Owner or Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/profiles/{{user_id}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles", "{{user_id}}"]
+            },
+            "description": "Get user by ID with complete biodata. User can only access their own data unless they are admin."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User (Owner or Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/profiles/{{user_id}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles", "{{user_id}}"]
+            },
+            "description": "Delete user and all related biodata. User can only delete their own account unless they are admin."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Error Test Cases",
+      "item": [
+        {
+          "name": "Auth - Login Invalid Credentials",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"nonexistent@example.com\",\n  \"password\": \"wrongpassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["login"]
+            },
+            "description": "Should return 401 - Invalid email or password"
+          },
+          "response": []
+        },
+        {
+          "name": "Auth - Register Duplicate Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"staff@example.com\",\n  \"password\": \"password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["register"]
+            },
+            "description": "Should return 400 - Email is already registered"
+          },
+          "response": []
+        },
+        {
+          "name": "Auth - Missing Fields",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["login"]
+            },
+            "description": "Should return 400 - Email and password are required"
+          },
+          "response": []
+        },
+        {
+          "name": "Unauthorized Access",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": ["{{baseUrl}}"],
+              "path": [""]
+            },
+            "description": "Should return 401 - Access without token"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Biodata - Duplicate ID Number",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"applied_position\": \"Test Position\",\n  \"full_name\": \"Test User\",\n  \"id_number\": \"1234567890123456\",\n  \"birth_place\": \"Jakarta\",\n  \"birth_date\": \"1995-01-25\",\n  \"gender\": \"Male\",\n  \"marital_status\": \"Single\",\n  \"address_id\": \"Test Address\",\n  \"address_current\": \"Test Current Address\",\n  \"personal_email\": \"test@example.com\",\n  \"phone_number\": \"081234567890\",\n  \"willing_to_relocate\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/profiles",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles"]
+            },
+            "description": "Should return 400 - ID number already exists"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Biodata - Already Has Biodata",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"applied_position\": \"Test Position\",\n  \"full_name\": \"Test User\",\n  \"id_number\": \"9999999999999999\",\n  \"birth_place\": \"Jakarta\",\n  \"birth_date\": \"1995-01-25\",\n  \"gender\": \"Male\",\n  \"marital_status\": \"Single\",\n  \"address_id\": \"Test Address\",\n  \"address_current\": \"Test Current Address\",\n  \"personal_email\": \"test2@example.com\",\n  \"phone_number\": \"081234567891\",\n  \"willing_to_relocate\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/profiles",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles"]
+            },
+            "description": "Should return 400 - User already has biodata. Use update instead."
+          },
+          "response": []
+        },
+        {
+          "name": "Access Other User's Data (Non-Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/profiles/999",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles", "999"]
+            },
+            "description": "Should return 403 - Forbidden when non-admin tries to access other user's data"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Without Biodata",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"applied_position\": \"Test Update\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/profiles/999",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles", "999"]
+            },
+            "description": "Should return 404 - Biodata not found. Please create biodata first."
+          },
+          "response": []
+        },
+        {
+          "name": "Staff Access Admin Endpoint",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staff_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/profiles",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles"]
+            },
+            "description": "Should return 403 - Staff user trying to access admin-only endpoint"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Non-Existent User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/profiles/99999",
+              "host": ["{{baseUrl}}"],
+              "path": ["profiles", "99999"]
+            },
+            "description": "Should return 404 - User not found"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Testing Workflows",
+      "item": [
+        {
+          "name": "Complete User Journey",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": ["{{baseUrl}}"],
+              "path": [""]
+            },
+            "description": "This is a placeholder request. Use this folder to test complete workflows:\n1. Register new user\n2. Login to get token\n3. Create biodata\n4. Update biodata\n5. View profile\n6. Admin: View all users\n7. Delete user (optional)"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

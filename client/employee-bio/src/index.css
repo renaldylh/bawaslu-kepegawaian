@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bawaslu-red: #DE2E22;
+  --bawaslu-red-hover: #C52218;
+  --bawaslu-gold: #F4B32A;
+  --bawaslu-gold-hover: #DDA020;
+  --bawaslu-dark: #1E2022;
+  --bawaslu-light: #F8F9FA;
+  --bawaslu-card-bg: #FFFFFF;
+}
+
+body {
+  font-family: 'Outfit', sans-serif !important;
+  background-color: var(--bawaslu-light) !important;
+  color: var(--bawaslu-dark) !important;
+}
+
+/* Navbar branding */
+.navbar {
+  border-top: 4px solid;
+  border-image: linear-gradient(to right, var(--bawaslu-red) 60%, var(--bawaslu-gold) 40%) 1;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Custom cards */
+.card {
+  border-radius: 16px !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.3s ease-in-out;
+  background: var(--bawaslu-card-bg) !important;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(222, 46, 34, 0.08) !important;
+}
+
+/* Modern inputs */
+.form-control, .form-select {
+  border-radius: 10px !important;
+  border: 1px solid #E2E8F0 !important;
+  padding: 12px 16px !important;
+  font-size: 0.95rem !important;
+  transition: all 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--bawaslu-red) !important;
+  box-shadow: 0 0 0 3px rgba(222, 46, 34, 0.15) !important;
+}
+
+/* Primary Button Override */
+.btn-dark {
+  background-color: var(--bawaslu-red) !important;
+  border-color: var(--bawaslu-red) !important;
+  border-radius: 10px !important;
+  font-weight: 500 !important;
+  padding: 12px 24px !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.btn-dark:hover {
+  background-color: var(--bawaslu-red-hover) !important;
+  border-color: var(--bawaslu-red-hover) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(222, 46, 34, 0.2) !important;
+}
+
+/* Outline Dark Button Override */
+.btn-outline-dark {
+  color: var(--bawaslu-red) !important;
+  border-color: var(--bawaslu-red) !important;
+  border-radius: 10px !important;
+  font-weight: 500 !important;
+  padding: 10px 20px !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.btn-outline-dark:hover {
+  color: #fff !important;
+  background-color: var(--bawaslu-red) !important;
+  border-color: var(--bawaslu-red) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(222, 46, 34, 0.15) !important;
+}
+
+/* Secondary Button Customization */
+.btn-outline-secondary {
+  border-radius: 10px !important;
+}
+
+/* Badge customizations */
+.badge.bg-primary {
+  background-color: var(--bawaslu-red) !important;
+  color: #fff !important;
+}
+
+.badge.bg-success {
+  background-color: #2E7D32 !important;
+  color: #fff !important;
+}
+
+.badge.bg-info {
+  background-color: var(--bawaslu-gold) !important;
+  color: #1E2022 !important;
+}
+
+.badge.bg-secondary {
+  background-color: var(--bawaslu-dark) !important;
+  color: #fff !important;
+}
+
+/* Custom header colors */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700 !important;
+  color: var(--bawaslu-dark) !important;
+}
+
+/* Custom tables */
+.table {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+.table-light {
+  background-color: #F1F5F9 !important;
+}
+
+/* Custom Login / Register layout background */
+.bawaslu-login-bg {
+  background: linear-gradient(135deg, #1E2022 0%, #111315 100%) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.bawaslu-login-bg::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(244, 179, 42, 0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
